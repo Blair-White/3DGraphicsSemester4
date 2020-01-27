@@ -400,10 +400,12 @@ namespace DX12GameProgramming
             var indices = new List<short>();
 
             SubmeshGeometry box = AppendMeshData(GeometryGenerator.CreateBox(1.5f, 0.5f, 1.5f, 3), Color.DarkGreen, vertices, indices);
-            SubmeshGeometry grid = AppendMeshData(GeometryGenerator.CreateGrid(20.0f, 30.0f, 60, 40), Color.ForestGreen, vertices,indices);
+            SubmeshGeometry grid = AppendMeshData(GeometryGenerator.CreateGrid(50.0f, 15.0f , 2, 40), Color.ForestGreen, vertices,indices);
             SubmeshGeometry sphere = AppendMeshData(GeometryGenerator.CreateSphere(0.5f, 20, 20), Color.Crimson, vertices, indices);
             SubmeshGeometry cylinder = AppendMeshData(GeometryGenerator.CreateCylinder(0.5f, 0.3f, 3.0f, 20, 20), Color.SteelBlue, vertices, indices);
             SubmeshGeometry pyramid = AppendMeshData(GeometryGenerator.Pyramid(1.5f, 0.5f, 1.5f, 3), Color.Purple, vertices, indices);
+            SubmeshGeometry wedge = AppendMeshData(GeometryGenerator.Wedge(1.5f, 0.5f, 1.5f, 3), Color.RosyBrown, vertices, indices);
+
             var geo = MeshGeometry.New(Device, CommandList, vertices, indices.ToArray(), "shapeGeo");
 
             geo.DrawArgs["box"] = box;
@@ -411,6 +413,7 @@ namespace DX12GameProgramming
             geo.DrawArgs["sphere"] = sphere;
             geo.DrawArgs["cylinder"] = cylinder;
             geo.DrawArgs["pyramid"] = pyramid;
+            geo.DrawArgs["wedge"] = wedge;
 
             _geometries[geo.Name] = geo;
         }
@@ -490,27 +493,34 @@ namespace DX12GameProgramming
 
         private void BuildRenderItems()
         {
-            AddRenderItem(RenderLayer.Opaque, 0, "shapeGeo", "box",
-                world: Matrix.Scaling(2.0f, 2.0f, 2.0f) * Matrix.Translation(0.0f, 0.5f, 0.0f));
-            AddRenderItem(RenderLayer.Opaque, 1, "shapeGeo", "grid");
+            //AddRenderItem(RenderLayer.Opaque, 0, "shapeGeo", "box",
+            //    world: Matrix.Scaling(2.0f, 2.0f, 2.0f) * Matrix.Translation(0.0f, 0.5f, 0.0f));
+           // AddRenderItem(RenderLayer.Opaque, 1, "shapeGeo", "grid");
 
-            int objCBIndex = 2;
-            for (int i = 0; i < 5; ++i)
+            int objCBIndex = 0;
+            for (int i = 0; i < 1; ++i)
             {
-                AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "cylinder",
-                    world: Matrix.Translation(-5.0f, 1.5f, -10.0f + i * 5.0f));
-                AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "cylinder",
-                    world: Matrix.Translation(+5.0f, 1.5f, -10.0f + i * 5.0f));
+                //Demo Starts Here
+                //AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "cylinder",
+                //    world: Matrix.Translation(-5.0f, 1.5f, -10.0f + i * 5.0f));
+                //AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "cylinder",
+                //    world: Matrix.Translation(+5.0f, 1.5f, -10.0f + i * 5.0f));
 
-                AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "sphere",
-                    world: Matrix.Translation(-5.0f, 3.5f, -10.0f + i * 5.0f));
-                AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "sphere",
-                    world: Matrix.Translation(+5.0f, 3.5f, -10.0f + i * 5.0f));
+                //AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "sphere",
+                //    world: Matrix.Translation(-5.0f, 3.5f, -10.0f + i * 5.0f));
+                //AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "sphere",
+                //    world: Matrix.Translation(+5.0f, 3.5f, -10.0f + i * 5.0f));
+                //Demo End
 
                 /// Testing start here
                 /// 
-                AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "pyramid",
-                    world: Matrix.Translation(0.0f, 3.5f, -10.0f + i * 5.0f));
+                
+                //Working shapes. test.
+              //  AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "pyramid",
+              //      world: Matrix.Translation(0.0f, 3.5f, -10.0f + i * 5.0f));
+              
+                AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "wedge",
+                    world: Matrix.Translation(3.0f, -1.5f, +0.0f + i * 5.0f));
             }
         }
 
