@@ -87,7 +87,7 @@ namespace DX12GameProgramming
             return meshData;
         }
 
-        //Triangular Prism
+        //Wedge
         public static MeshData Wedge(float width, float height, float depth, int numSubdivisions)
         {
             var meshData = new MeshData();
@@ -128,7 +128,158 @@ namespace DX12GameProgramming
 
             return meshData;
         }
+        //Diamond
+        public static MeshData Diamond(float width, float height, float depth, int numSubdivisions)
+        {
+            var meshData = new MeshData();
 
+            //
+            // Create the vertices.
+            //
+
+            var w2 = 1.5f * width;
+            var h2 = 4.5f * height;
+            var d2 = 1.5f * depth;
+
+
+            // Fill in the front face vertex data.
+            meshData.Vertices.Add(new Vertex(-w2, 0, +d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(+w2, 0, +d2, 0, 0, -1, 1, 0, 0, 0, 1));
+            meshData.Vertices.Add(new Vertex(0, 0, -d2, 0, 0, -1, 1, 0, 0, 1, 0));
+            meshData.Vertices.Add(new Vertex(0, +h2*5, 0, 0, 0, -1, 1, 0, 0, 1, 1));
+            meshData.Vertices.Add(new Vertex(0, -h2*5, 0, 0, 0, -1, 1, 0, 0, 1, 1));
+
+            //
+            // Create the indices.
+            //
+
+            meshData.Indices32.AddRange(new[]
+            {
+              0,3,1, 2,1,3, 0,2,3,
+              0,1,4, 1,2,4, 4,2,0
+            });
+
+            // Put a cap on the number of subdivisions.
+            numSubdivisions = Math.Min(numSubdivisions, 6);
+
+            for (int i = 0; i < numSubdivisions; ++i)
+                Subdivide(meshData);
+
+            return meshData;
+        }
+        //Triangular Prism
+        public static MeshData TriangularPrism(float width, float height, float depth, int numSubdivisions)
+        {
+            var meshData = new MeshData();
+
+            //
+            // Create the vertices.
+            //
+
+            var w2 = 1.5f * width;
+            var h2 = 4.5f * height;
+            var d2 = 1.5f * depth;
+
+
+            // Fill in the front face vertex data.
+            meshData.Vertices.Add(new Vertex(-w2, -h2, +d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(-w2, -h2, -d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(-w2, +h2,   0, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(+w2, -h2, +d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(+w2, -h2, -d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(+w2, +h2, 0, 0, 0, -1, 1, 0, 0, 0, 0));
+            //
+            // Create the indices.
+            //
+
+            meshData.Indices32.AddRange(new[]
+            {
+                0,3,2, 3,5,2,
+                1,0,2,
+                2,5,4, 4,1,2,
+                4,5,3,
+                0,4,3, 4,0,1
+            });
+
+            // Put a cap on the number of subdivisions.
+            numSubdivisions = Math.Min(numSubdivisions, 6);
+
+            for (int i = 0; i < numSubdivisions; ++i)
+                Subdivide(meshData);
+
+            return meshData;
+        }
+        //Triangular Prism
+        public static MeshData HexagonalPrism(float width, float height, float depth, int numSubdivisions)
+        {
+            var meshData = new MeshData();
+
+            //
+            // Create the vertices.
+            //
+
+            var w2 = 1.5f * width;
+            var h2 = 4.5f * height;
+            var d2 = 1.5f * depth;
+
+
+            // Fill in the front face vertex data.
+            //Starting from 10pm going clockwise, side 1
+            meshData.Vertices.Add(new Vertex(-w2, +h2 * 0.5f, +d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(-w2 * 0.5f, +h2, +d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(+w2 * 0.5f, +h2, +d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(+w2, +h2 * 0.5f, +d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(+w2, -h2 * 0.5f, +d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(+w2 * 0.5f, -h2, +d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(-w2 * 0.5f, -h2, +d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(-w2, -h2 * 0.5f, +d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            //mid point side 1 POINT (8)
+            meshData.Vertices.Add(new Vertex(0, 0, +d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            //side 2
+            meshData.Vertices.Add(new Vertex(-w2, +h2 * 0.5f, -d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(-w2 * 0.5f, +h2, -d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(+w2 * 0.5f, +h2, -d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(+w2, +h2 * 0.5f, -d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(+w2, -h2 * 0.5f, -d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(+w2 * 0.5f, -h2, -d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(-w2 * 0.5f, -h2, -d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            meshData.Vertices.Add(new Vertex(-w2, -h2 * 0.5f, -d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            //mid point side 2//POINT 17
+            meshData.Vertices.Add(new Vertex(0, 0, -d2, 0, 0, -1, 1, 0, 0, 0, 0));
+            //
+            // Create the indices.
+            //
+
+            meshData.Indices32.AddRange(new[]
+            {
+                //Side1
+                0,8,1, 8,2,1, 2,8,3, 8,4,3, 4,8,5, 8,6,5, 6,8,7, 8,0,7,
+                //Side2
+                10,17,9, 17,10,11, 12,17,11, 17,12,13, 14,17,13, 17,14,15, 16,17,15, 17,16,9, 
+                //fill in  
+                1,10,0, 0,10,9, 2,11,1, 1,11,10, 3,12,2, 2,12,11, 4,13,3, 3,13,12, 5,14,4, 4,14,13,
+                6,15,5, 5,15,14, 7,16,6, 6,16,15, 0,9,7, 7,9,16 
+            });
+
+            // Put a cap on the number of subdivisions.
+            numSubdivisions = Math.Min(numSubdivisions, 6);
+
+            for (int i = 0; i < numSubdivisions; ++i)
+                Subdivide(meshData);
+
+            return meshData;
+        }
+        public static MeshData CreateCone(float bottomRadius, float topRadius,
+           float height, int sliceCount, int stackCount)
+        {
+            var meshData = new MeshData();
+
+            BuildCylinderSide(bottomRadius, 0.0f, height, sliceCount, stackCount, meshData);
+           // BuildCylinderTopCap(topRadius, height, sliceCount, meshData);
+            BuildCylinderBottomCap(bottomRadius, height, sliceCount, meshData);
+
+            return meshData;
+        }
         public static MeshData CreateBox(float width, float height, float depth, int numSubdivisions)
         {
             var meshData = new MeshData();
