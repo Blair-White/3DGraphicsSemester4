@@ -403,13 +403,14 @@ namespace DX12GameProgramming
             SubmeshGeometry grid = AppendMeshData(GeometryGenerator.CreateGrid(20.0f, 30.0f, 60, 40), Color.ForestGreen, vertices,indices);
             SubmeshGeometry sphere = AppendMeshData(GeometryGenerator.CreateSphere(0.5f, 20, 20), Color.Crimson, vertices, indices);
             SubmeshGeometry cylinder = AppendMeshData(GeometryGenerator.CreateCylinder(0.5f, 0.3f, 3.0f, 20, 20), Color.SteelBlue, vertices, indices);
-
+            SubmeshGeometry pyramid = AppendMeshData(GeometryGenerator.Pyramid(1.5f, 0.5f, 1.5f, 3), Color.Purple, vertices, indices);
             var geo = MeshGeometry.New(Device, CommandList, vertices, indices.ToArray(), "shapeGeo");
 
             geo.DrawArgs["box"] = box;
             geo.DrawArgs["grid"] = grid;
             geo.DrawArgs["sphere"] = sphere;
             geo.DrawArgs["cylinder"] = cylinder;
+            geo.DrawArgs["pyramid"] = pyramid;
 
             _geometries[geo.Name] = geo;
         }
@@ -505,6 +506,11 @@ namespace DX12GameProgramming
                     world: Matrix.Translation(-5.0f, 3.5f, -10.0f + i * 5.0f));
                 AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "sphere",
                     world: Matrix.Translation(+5.0f, 3.5f, -10.0f + i * 5.0f));
+
+                /// Testing start here
+                /// 
+                AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "pyramid",
+                    world: Matrix.Translation(0.0f, 3.5f, -10.0f + i * 5.0f));
             }
         }
 
