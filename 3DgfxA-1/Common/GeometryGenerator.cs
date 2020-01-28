@@ -137,9 +137,9 @@ namespace DX12GameProgramming
             // Create the vertices.
             //
 
-            var w2 = 1.5f * width;
-            var h2 = 4.5f * height;
-            var d2 = 1.5f * depth;
+            var w2 = 0.5f * width;
+            var h2 = 0.5f * height;
+            var d2 = 0.5f * depth;
 
 
             // Fill in the front face vertex data.
@@ -177,7 +177,7 @@ namespace DX12GameProgramming
             //
 
             var w2 = 1.5f * width;
-            var h2 = 4.5f * height;
+            var h2 = 1.5f * height;
             var d2 = 1.5f * depth;
 
 

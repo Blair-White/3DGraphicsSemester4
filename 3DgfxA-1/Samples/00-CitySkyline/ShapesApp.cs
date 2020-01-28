@@ -402,7 +402,7 @@ namespace DX12GameProgramming
             //Primitives
             SubmeshGeometry box = AppendMeshData(GeometryGenerator.CreateBox(1.5f, 0.5f, 1.5f, 3), Color.DarkGreen, vertices, indices);
             SubmeshGeometry grid = AppendMeshData(GeometryGenerator.CreateGrid(50.0f, 15.0f , 2, 40), Color.ForestGreen, vertices,indices);
-            SubmeshGeometry sphere = AppendMeshData(GeometryGenerator.CreateSphere(0.5f, 20, 20), Color.Crimson, vertices, indices);
+            SubmeshGeometry sphere = AppendMeshData(GeometryGenerator.CreateSphere(5.5f, 40, 40), Color.LightSeaGreen, vertices, indices);
             SubmeshGeometry cylinder = AppendMeshData(GeometryGenerator.CreateCylinder(0.5f, 0.3f, 3.0f, 20, 20), Color.SteelBlue, vertices, indices);
             SubmeshGeometry pyramid = AppendMeshData(GeometryGenerator.Pyramid(1.5f, 0.5f, 1.5f, 3), Color.Purple, vertices, indices);
             SubmeshGeometry wedge = AppendMeshData(GeometryGenerator.Wedge(1.5f, 0.5f, 1.5f, 3), Color.RosyBrown, vertices, indices);
@@ -414,16 +414,40 @@ namespace DX12GameProgramming
             SubmeshGeometry water = AppendMeshData(GeometryGenerator.CreateBox(35.0f, 0.2f, 6.5f, 3), Color.LightBlue, vertices, indices);
             SubmeshGeometry water2 = AppendMeshData(GeometryGenerator.CreateBox(35.0f, 0.5f, 6.5f, 3), Color.Blue, vertices, indices);
             SubmeshGeometry pierBorder = AppendMeshData(GeometryGenerator.HexagonalPrism(0.5f, 0.1f, 2.5f, 3), Color.SlateGray, vertices, indices);
-            SubmeshGeometry pierBox = AppendMeshData(GeometryGenerator.CreateBox(2.5f, 0.5f, 7.5f, 3), Color.Black, vertices, indices);
+            SubmeshGeometry pierBox = AppendMeshData(GeometryGenerator.CreateBox(2.5f, 0.5f, 7.5f, 3), Color.LightSeaGreen, vertices, indices);
             //Main Concrete Floor
-            SubmeshGeometry floor = AppendMeshData(GeometryGenerator.CreateBox(35, 0.5f, 20f, 3), Color.Black, vertices, indices);
+            SubmeshGeometry floor = AppendMeshData(GeometryGenerator.CreateBox(35, 0.5f, 20f, 36), Color.Black, vertices, indices);
             //Trees and Lights
             SubmeshGeometry treeBase = AppendMeshData(GeometryGenerator.CreateCylinder(0.15f, .05f, 1.0f, 20, 20), Color.SaddleBrown, vertices, indices);
             SubmeshGeometry treeTop = AppendMeshData(GeometryGenerator.CreateCone(0.5f, 0.3f, 1.5f, 20, 20), Color.ForestGreen, vertices, indices);
+            SubmeshGeometry treeTop2 = AppendMeshData(GeometryGenerator.Diamond(0.5f, 0.3f, 0.5f, 3), Color.DarkOliveGreen, vertices, indices);
+            SubmeshGeometry treeTop3 = AppendMeshData(GeometryGenerator.Pyramid(1.5f, 0.3f, 1.5f, 3), Color.DarkOrange, vertices, indices);
             SubmeshGeometry lightBase = AppendMeshData(GeometryGenerator.CreateCylinder(0.15f, .05f, 1.0f, 20, 20), Color.LightSlateGray, vertices, indices);
             SubmeshGeometry lightLight = AppendMeshData(GeometryGenerator.CreateSphere(0.2f, 20, 20), Color.LightGoldenrodYellow, vertices, indices);
             //boardwalk 
-            SubmeshGeometry boardwalk = AppendMeshData(GeometryGenerator.CreateBox(35.0f, 0.5f, 2.5f, 12), Color.DarkGray, vertices, indices);
+            SubmeshGeometry boardwalk = AppendMeshData(GeometryGenerator.CreateBox(35.0f, 0.5f, 2.5f, 24), Color.DarkGray, vertices, indices);
+            //Street North
+            SubmeshGeometry street0 = AppendMeshData(GeometryGenerator.CreateBox(3.0f, 0.5f, 18.0f, 24), Color.DarkGray, vertices, indices);
+            //Square Buildings
+            SubmeshGeometry buildingL = AppendMeshData(GeometryGenerator.CreateBox(1.5f, 9.5f, 1.5f, 3), Color.DimGray, vertices, indices);
+            SubmeshGeometry buildingS = AppendMeshData(GeometryGenerator.CreateBox(3.5f, 7.5f, 3.5f, 3), Color.BlanchedAlmond, vertices, indices);
+            //Pool of water - Park special
+            SubmeshGeometry pool = AppendMeshData(GeometryGenerator.CreateCylinder(3.5f, -0.1f, 1.1f, 20, 20), Color.SteelBlue, vertices, indices);
+            //GBC Tower
+            SubmeshGeometry towerBase = AppendMeshData(GeometryGenerator.CreateCylinder(1.5f, 1.1f, 22.0f, 20, 20), Color.SteelBlue, vertices, indices);
+            //Tower top boxes
+            SubmeshGeometry towerBox = AppendMeshData(GeometryGenerator.CreateBox(4.5f, 0.4f, 4.5f, 3), Color.MediumSeaGreen, vertices, indices);
+            //Tower Sphere
+            SubmeshGeometry towerSphere = AppendMeshData(GeometryGenerator.CreateSphere(1.75f, 40, 40), Color.MediumPurple, vertices, indices);
+            //Tower Top Cap
+            SubmeshGeometry towerCap = AppendMeshData(GeometryGenerator.Diamond(2.5f, 2.5f, 2.5f, 3), Color.PaleVioletRed, vertices, indices);
+            //Tower Borders
+            SubmeshGeometry towerBorders = AppendMeshData(GeometryGenerator.TriangularPrism(0.2f, 0.5f, 1.55f, 3), Color.Gold, vertices, indices);
+            //Dome Box
+            SubmeshGeometry domeBox = AppendMeshData(GeometryGenerator.CreateBox(8.2f, 1.25f, 1.15f, 3), Color.IndianRed, vertices, indices);
+            //Dome Wedge
+            SubmeshGeometry domeWedge = AppendMeshData(GeometryGenerator.Wedge(0.2f, 0.25f, 0.05f, 3), Color.DeepPink, vertices, indices);
+
             var geo = MeshGeometry.New(Device, CommandList, vertices, indices.ToArray(), "shapeGeo");
 
             geo.DrawArgs["box"] = box;
@@ -443,10 +467,22 @@ namespace DX12GameProgramming
             geo.DrawArgs["floor"] = floor;
             geo.DrawArgs["treeBase"] = treeBase;
             geo.DrawArgs["treeTop"] = treeTop;
+            geo.DrawArgs["treeTop2"] = treeTop2;
+            geo.DrawArgs["treeTop3"] = treeTop3;
             geo.DrawArgs["lightBase"] = lightBase;
             geo.DrawArgs["lightLight"] = lightLight;
             geo.DrawArgs["boardwalk"] = boardwalk;
-
+            geo.DrawArgs["buildingL"] = buildingL;
+            geo.DrawArgs["buildingS"] = buildingS;
+            geo.DrawArgs["street0"] = street0;
+            geo.DrawArgs["pool"] = pool;
+            geo.DrawArgs["towerBase"] = towerBase;
+            geo.DrawArgs["towerBox"] = towerBox;
+            geo.DrawArgs["towerSphere"] = towerSphere;
+            geo.DrawArgs["towerCap"] = towerCap;
+            geo.DrawArgs["towerBorders"] = towerBorders;
+            geo.DrawArgs["domeBox"] = domeBox;
+            geo.DrawArgs["domeWedge"] = domeWedge;
             _geometries[geo.Name] = geo;
         }
 
@@ -545,7 +581,34 @@ namespace DX12GameProgramming
             //boardwalk
             AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "boardwalk",
             world: Matrix.Translation(3, -1.4f, 2.5f));
-
+            //streete
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "street0",
+            world: Matrix.Translation(-3.5f, -1.4f, 12.5f));
+            //pool
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "pool",
+           world: Matrix.Translation(-11.0f, -1.2f, 16.5f));
+            //Poolside trees
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "treeBase",
+              world: Matrix.Translation(-11, -0.75f, 11.55f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "treeTop3",
+              world: Matrix.Translation(-11, 0.25f, 11.55f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "treeBase",
+              world: Matrix.Translation(-13, -0.75f, 12.55f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "treeTop2",
+              world: Matrix.Translation(-13, 0.25f, 12.55f));
+            
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "treeBase",
+              world: Matrix.Translation(-7, -0.75f, 14.55f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "treeTop3",
+              world: Matrix.Translation(-7, 0.25f, 14.55f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "treeBase",
+              world: Matrix.Translation(-6, -0.75f, 16.55f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "treeTop2",
+              world: Matrix.Translation(-6, 0.25f, 16.55f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "treeBase",
+              world: Matrix.Translation(-9, -0.75f, 12.55f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "treeTop",
+              world: Matrix.Translation(-9, 0.25f, 12.55f));
             //Lakeside Treeline/Lights
             for (int i = 0; i < 8; i++)
             {
@@ -561,6 +624,50 @@ namespace DX12GameProgramming
                 AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "lightLight",
                world: Matrix.Translation(-11 + i * 4.5f, -0.1f, 4.25f));
             }
+
+            //Buildings, Large
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "buildingL",
+             world: Matrix.Translation(-12, 3, 6.25f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "buildingL",
+             world: Matrix.Translation(-6, 3, 9.25f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "buildingL",
+            world: Matrix.Translation(1, 3, 7.25f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "buildingL",
+            world: Matrix.Translation(1, 3, 15.25f));
+            //Buildings, Small
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "buildingS",
+            world: Matrix.Translation(-8, 2.25f, 6.25f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "buildingS",
+            world: Matrix.Translation(2, 2.25f, 12.25f));
+            //Dome
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "sphere",
+            world: Matrix.Translation(12, -1, 12.25f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "domeBox",
+            world: Matrix.Translation(12, -1, 6.25f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "domeWedge",
+            world: Matrix.Translation(9, 1, 6.25f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "domeWedge",
+            world: Matrix.Translation(12, 1, 6.25f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "domeWedge",
+            world: Matrix.Translation(15, 1, 6.25f));
+            //Tower
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "towerBase",
+            world: Matrix.Translation(8, 9.5f, 18.25f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "towerBox",
+            world: Matrix.Translation(8, 21.5f, 18.25f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "towerBox",
+            world: Matrix.Translation(8, 19.5f, 18.25f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "towerSphere",
+            world: Matrix.Translation(8, 20.5f, 18.25f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "towerCap",
+            world: Matrix.Translation(8, 25.5f, 18.25f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "towerBorders",
+           world: Matrix.Translation(6, 22.25f, 18.00f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "towerBorders",
+          world: Matrix.Translation(10, 22.25f, 18.00f));
+        //Dome Ramps
+            
+
 
             //KEEP BELOW FOR REFERENCE 
             //AddRenderItem(RenderLayer.Opaque, 0, "shapeGeo", "box",
