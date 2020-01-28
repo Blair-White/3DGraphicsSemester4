@@ -418,8 +418,12 @@ namespace DX12GameProgramming
             //Main Concrete Floor
             SubmeshGeometry floor = AppendMeshData(GeometryGenerator.CreateBox(35, 0.5f, 20f, 3), Color.Black, vertices, indices);
             //Trees and Lights
-            SubmeshGeometry treeBase = AppendMeshData(GeometryGenerator.CreateCylinder(0.5f, 0.3f, 3.0f, 20, 20), Color.SaddleBrown, vertices, indices);
-
+            SubmeshGeometry treeBase = AppendMeshData(GeometryGenerator.CreateCylinder(0.15f, .05f, 1.0f, 20, 20), Color.SaddleBrown, vertices, indices);
+            SubmeshGeometry treeTop = AppendMeshData(GeometryGenerator.CreateCone(0.5f, 0.3f, 1.5f, 20, 20), Color.ForestGreen, vertices, indices);
+            SubmeshGeometry lightBase = AppendMeshData(GeometryGenerator.CreateCylinder(0.15f, .05f, 1.0f, 20, 20), Color.LightSlateGray, vertices, indices);
+            SubmeshGeometry lightLight = AppendMeshData(GeometryGenerator.CreateSphere(0.2f, 20, 20), Color.LightGoldenrodYellow, vertices, indices);
+            //boardwalk 
+            SubmeshGeometry boardwalk = AppendMeshData(GeometryGenerator.CreateBox(35.0f, 0.5f, 2.5f, 12), Color.DarkGray, vertices, indices);
             var geo = MeshGeometry.New(Device, CommandList, vertices, indices.ToArray(), "shapeGeo");
 
             geo.DrawArgs["box"] = box;
@@ -438,6 +442,10 @@ namespace DX12GameProgramming
             geo.DrawArgs["pierBox"] = pierBox;
             geo.DrawArgs["floor"] = floor;
             geo.DrawArgs["treeBase"] = treeBase;
+            geo.DrawArgs["treeTop"] = treeTop;
+            geo.DrawArgs["lightBase"] = lightBase;
+            geo.DrawArgs["lightLight"] = lightLight;
+            geo.DrawArgs["boardwalk"] = boardwalk;
 
             _geometries[geo.Name] = geo;
         }
@@ -534,9 +542,26 @@ namespace DX12GameProgramming
            //Main Flooring
             AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "floor",
             world: Matrix.Translation(3, -1.5f, 11));
+            //boardwalk
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "boardwalk",
+            world: Matrix.Translation(3, -1.4f, 2.5f));
+
             //Lakeside Treeline/Lights
-            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "treeBase",
-           world: Matrix.Translation(0, 0, 5));
+            for (int i = 0; i < 8; i++)
+            {
+               AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "treeBase",
+               world: Matrix.Translation(-13+i*4.5f, -0.75f, 1.55f));
+                AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "treeTop",
+               world: Matrix.Translation(-13 + i * 4.5f, 0.25f, 1.55f));
+            }
+            for (int i = 0; i < 7; i++)
+            {
+                AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "lightBase",
+                world: Matrix.Translation(-11 + i * 4.5f, -0.75f, 4.25f));
+                AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "lightLight",
+               world: Matrix.Translation(-11 + i * 4.5f, -0.1f, 4.25f));
+            }
+
             //KEEP BELOW FOR REFERENCE 
             //AddRenderItem(RenderLayer.Opaque, 0, "shapeGeo", "box",
             //    world: Matrix.Scaling(2.0f, 2.0f, 2.0f) * Matrix.Translation(0.0f, 0.5f, 0.0f));
