@@ -399,6 +399,7 @@ namespace DX12GameProgramming
             var vertices = new List<Vertex>();
             var indices = new List<short>();
 
+            //Primitives
             SubmeshGeometry box = AppendMeshData(GeometryGenerator.CreateBox(1.5f, 0.5f, 1.5f, 3), Color.DarkGreen, vertices, indices);
             SubmeshGeometry grid = AppendMeshData(GeometryGenerator.CreateGrid(50.0f, 15.0f , 2, 40), Color.ForestGreen, vertices,indices);
             SubmeshGeometry sphere = AppendMeshData(GeometryGenerator.CreateSphere(0.5f, 20, 20), Color.Crimson, vertices, indices);
@@ -409,6 +410,16 @@ namespace DX12GameProgramming
             SubmeshGeometry triPrism = AppendMeshData(GeometryGenerator.TriangularPrism(1.5f, 0.5f, 1.5f, 3), Color.DarkOrchid, vertices, indices);
             SubmeshGeometry hexPrism = AppendMeshData(GeometryGenerator.HexagonalPrism(1.5f, 0.5f, 1.5f, 3), Color.RoyalBlue, vertices, indices);
             SubmeshGeometry cone = AppendMeshData(GeometryGenerator.CreateCone(0.5f, 0.3f, 3.0f, 20, 20), Color.SteelBlue, vertices, indices);
+            //Special
+            SubmeshGeometry water = AppendMeshData(GeometryGenerator.CreateBox(35.0f, 0.2f, 6.5f, 3), Color.LightBlue, vertices, indices);
+            SubmeshGeometry water2 = AppendMeshData(GeometryGenerator.CreateBox(35.0f, 0.5f, 6.5f, 3), Color.Blue, vertices, indices);
+            SubmeshGeometry pierBorder = AppendMeshData(GeometryGenerator.HexagonalPrism(0.5f, 0.1f, 2.5f, 3), Color.SlateGray, vertices, indices);
+            SubmeshGeometry pierBox = AppendMeshData(GeometryGenerator.CreateBox(2.5f, 0.5f, 7.5f, 3), Color.Black, vertices, indices);
+            //Main Concrete Floor
+            SubmeshGeometry floor = AppendMeshData(GeometryGenerator.CreateBox(35, 0.5f, 20f, 3), Color.Black, vertices, indices);
+            //Trees and Lights
+            SubmeshGeometry treeBase = AppendMeshData(GeometryGenerator.CreateCylinder(0.5f, 0.3f, 3.0f, 20, 20), Color.SaddleBrown, vertices, indices);
+
             var geo = MeshGeometry.New(Device, CommandList, vertices, indices.ToArray(), "shapeGeo");
 
             geo.DrawArgs["box"] = box;
@@ -421,6 +432,13 @@ namespace DX12GameProgramming
             geo.DrawArgs["triPrism"] = triPrism;
             geo.DrawArgs["hexPrism"] = hexPrism;
             geo.DrawArgs["cone"] = cone;
+            geo.DrawArgs["water"] = water;
+            geo.DrawArgs["water2"] = water2;
+            geo.DrawArgs["pierBorder"] = pierBorder;
+            geo.DrawArgs["pierBox"] = pierBox;
+            geo.DrawArgs["floor"] = floor;
+            geo.DrawArgs["treeBase"] = treeBase;
+
             _geometries[geo.Name] = geo;
         }
 
@@ -499,45 +517,60 @@ namespace DX12GameProgramming
 
         private void BuildRenderItems()
         {
+            //Begin Creating objects
+            int objCBIndex = 0;
+            //Water            
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "water",
+            world: Matrix.Translation(3.0f, -1.5f, -2.5f));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "water2",
+            world: Matrix.Translation(3.0f, -2.0f, -2.5f));
+            //Pier
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "pierBorder",
+            world: Matrix.Translation(-6.0f, -1.5f, -3));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "pierBorder",
+            world: Matrix.Translation(-2.0f, -1.5f, -3));
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "pierBox",
+            world: Matrix.Translation(-4.0f, -1.5f, -3));
+           //Main Flooring
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "floor",
+            world: Matrix.Translation(3, -1.5f, 11));
+            //Lakeside Treeline/Lights
+            AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "treeBase",
+           world: Matrix.Translation(0, 0, 5));
+            //KEEP BELOW FOR REFERENCE 
             //AddRenderItem(RenderLayer.Opaque, 0, "shapeGeo", "box",
             //    world: Matrix.Scaling(2.0f, 2.0f, 2.0f) * Matrix.Translation(0.0f, 0.5f, 0.0f));
-           // AddRenderItem(RenderLayer.Opaque, 1, "shapeGeo", "grid");
+            // AddRenderItem(RenderLayer.Opaque, 1, "shapeGeo", "grid");
 
-            int objCBIndex = 0;
-            for (int i = 0; i < 1; ++i)
-            {
-                //Demo Starts Here
-                //AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "cylinder",
-                //    world: Matrix.Translation(-5.0f, 1.5f, -10.0f + i * 5.0f));
-                //AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "cylinder",
-                //    world: Matrix.Translation(+5.0f, 1.5f, -10.0f + i * 5.0f));
+            //Demo Starts Here
+            //AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "cylinder",
+            //    world: Matrix.Translation(-5.0f, 1.5f, -10.0f + i * 5.0f));
+            //AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "cylinder",
+            //    world: Matrix.Translation(+5.0f, 1.5f, -10.0f + i * 5.0f));
 
-                //AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "sphere",
-                //    world: Matrix.Translation(-5.0f, 3.5f, -10.0f + i * 5.0f));
-                //AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "sphere",
-                //    world: Matrix.Translation(+5.0f, 3.5f, -10.0f + i * 5.0f));
-                //Demo End
+            //AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "sphere",
+            //    world: Matrix.Translation(-5.0f, 3.5f, -10.0f + i * 5.0f));
+            //AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "sphere",
+            //    world: Matrix.Translation(+5.0f, 3.5f, -10.0f + i * 5.0f));
+            //Demo End
 
-                /// Testing start here
-                /// 
+            /// Testing start here
+            /// 
 
-                //Working shapes. test.
-                //Pyramid Test
-                //  AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "pyramid",
-                //      world: Matrix.Translation(0.0f, 3.5f, -10.0f + i * 5.0f));
-                ///Wedge Test
-                //  AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "wedge",
-                //      world: Matrix.Translation(3.0f, -1.5f, +0.0f + i * 5.0f));
-                //Diamond Test
-                // AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "diamond",
-                //     world: Matrix.Translation(3.0f, -1.5f, +0.0f + i * 5.0f));
-                // AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "triPrism",
-                //    world: Matrix.Translation(3.0f, -1.5f, +0.0f + i * 5.0f));
-                // AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "hexPrism",
-                //    world: Matrix.Translation(3.0f, -1.5f, +0.0f + i * 5.0f));
-                AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "cone",
-                   world: Matrix.Translation(3.0f, -1.5f, +0.0f + i * 5.0f));
-            }
+            //Working shapes. test.
+            //Pyramid Test
+            //  AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "pyramid",
+            //      world: Matrix.Translation(0.0f, 3.5f, -10.0f + i * 5.0f));
+            ///Wedge Test
+            //  AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "wedge",
+            //      world: Matrix.Translation(3.0f, -1.5f, +0.0f + i * 5.0f));
+            //Diamond Test
+            // AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "diamond",
+            //     world: Matrix.Translation(3.0f, -1.5f, +0.0f + i * 5.0f));
+            // AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "triPrism",
+            //    world: Matrix.Translation(3.0f, -1.5f, +0.0f + i * 5.0f));
+            // AddRenderItem(RenderLayer.Opaque, objCBIndex++, "shapeGeo", "hexPrism",
+            //    world: Matrix.Translation(3.0f, -1.5f, +0.0f + i * 5.0f));       
         }
 
         private void AddRenderItem(RenderLayer layer, int objCBIndex, string geoName, string submeshName, Matrix? world = null)
